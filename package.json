@@ -1,0 +1,19 @@
+{
+  "name": "bookmark-focus-highlight",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp compress; gulp bookmarkify"
+  },
+  "author": "Jay Kid",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "3.9.1",
+    "gulp-replace": "0.6.1",
+    "gulp-text-simple": "0.4.1",
+    "gulp-uglify": "3.0.0",
+    "pump": "3.0.0"
+  }
+}

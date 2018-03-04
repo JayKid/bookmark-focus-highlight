@@ -1,4 +1,4 @@
-function foo() {
+(function() {
     var COLORS = ['lime','rebeccapurple','orange','blue'];
     var ZERO_KEYCODE = 48;
     var STYLE_TAG_ID = 'bfh';
@@ -41,4 +41,4 @@ function foo() {
 
     this.createAndAppendStyleTag();
     this.bindKeyboardShortcuts();
-}
+})();
