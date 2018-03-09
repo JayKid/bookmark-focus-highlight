@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var watch = require('gulp-watch');
 var uglify = require('gulp-uglify');
 var pump = require('pump');
 var replace = require('gulp-replace');
@@ -29,4 +30,13 @@ gulp.task('bookmarkify', function() {
   return gulp.src(['./dist/main.js'])
     .pipe(wrappedBookmarkify())
     .pipe(gulp.dest('dist/'));
+});
+
+ 
+gulp.task('watch', function () {
+  return watch('main.js', function () {
+      return gulp.src('main.js')
+        .pipe(gulp.dest('dist/'));
+      
+  });
 });
