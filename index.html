@@ -21,7 +21,7 @@
             <legend>Personal information</legend>
             <div>
               <label for="username">Name: <abbr title="required">*</abbr></label>
-              <input id="username" type="text" name="username">
+              <input aria-hidden="false" aria-busy="false" id="username" type="text" name="username">
             </div>
         </fieldset>
         <fieldset>
@@ -50,7 +50,7 @@
               <input type="checkbox" id="taste_2" name="taste_banana" value="2">
             </p>
         </fieldset>
-        <button type="submit">Send form</button>
+        <button aria-hidden="false" aria-busy="false" type="submit">Send form</button>
       </form>
   <script src="dist/main.js"></script>
 </body>
