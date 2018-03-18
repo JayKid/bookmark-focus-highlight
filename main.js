@@ -57,20 +57,26 @@
     };
 
     this.getAttributesListMarkup = function (DOMNode) {
-        var listElement = document.createElement('ul');
-        var attributesToDisplay = DOMNode.getAttributeNames().filter(function(attributeName) {
-            return attributeName.indexOf('aria') >= 0;
-        });
-        for (var index in attributesToDisplay) {
-            var attributeName = attributesToDisplay[index];
+
+        var createAttributeListItem = function (attributeName, attributeValue) {
             var listItemElement = document.createElement('li');
             var attributeNameElement = document.createElement('span');
             attributeNameElement.innerText = attributeName + ": ";
             var attributeValueElement = document.createElement('span');
-            attributeValueElement.innerText = DOMNode.getAttribute(attributeName);
+            attributeValueElement.innerText = attributeValue;
             listItemElement.appendChild(attributeNameElement);
             listItemElement.appendChild(attributeValueElement);
-            listElement.appendChild(listItemElement);
+            return listItemElement;
+        }
+
+        var listElement = document.createElement('ul');
+        var attributesToDisplay = DOMNode.getAttributeNames().filter(function(attributeName) {
+            return attributeName.indexOf('aria') >= 0;
+        });
+        
+        for (var index in attributesToDisplay) {
+            var attributeName = attributesToDisplay[index];
+            listElement.appendChild(createAttributeListItem(attributeName, DOMNode.getAttribute(attributeName)));
         }
         return listElement;
     };
