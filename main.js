@@ -1,6 +1,7 @@
 (function() {
     var COLORS = ['lime','rebeccapurple','orange','blue'];
     var ZERO_KEYCODE = 48;
+    var I_KEY = 'i';
     var STYLE_TAG_ID = 'bfh';
     var INSPECTOR_ELEMENT_ID = 'bfh-inspector';
     var INSPECTOR_TAGNAME_FIELD_ID = 'bfh-inspector-tag';
@@ -12,6 +13,7 @@
 
     // Init
     this.currentColorIndex = 0;
+    this.isInspectorDisplayed = true;
 
     // Methods
     this.getNextColor = function() {
@@ -32,7 +34,19 @@
         document.querySelector('head').appendChild(styleTag);
     };
 
-    this.toggleColorOnZeroPressed = function(event) {
+    this.toggleInspector = function(event) {
+        if (event && event.key === I_KEY) {
+            var inspectorElement = document.querySelector('#'+INSPECTOR_ELEMENT_ID);
+            if (this.isInspectorDisplayed) {
+                inspectorElement.style.display = 'none';
+            }
+            else {
+                inspectorElement.style.display = 'block';
+            }
+            this.isInspectorDisplayed = !this.isInspectorDisplayed;
+        }
+    };
+    this.toggleColor = function(event) {
         if (event && event.keyCode === ZERO_KEYCODE) {
             var currentStyleTag = document.querySelector('#'+STYLE_TAG_ID);
             var nextColor = this.getNextColor();
@@ -83,7 +97,8 @@
 
     // Bindings
     this.bindKeyboardShortcuts = function() {
-        document.addEventListener('keyup', this.toggleColorOnZeroPressed.bind(this));
+        document.addEventListener('keyup', this.toggleColor.bind(this));
+        document.addEventListener('keyup', this.toggleInspector.bind(this));
     };
 
     this.addFocusListener = function() {
