@@ -9,7 +9,7 @@
     var COLOR_TOKEN = 'COLOR';
     var STYLE_TAG_CONTENTS_TEMPLATE = "*:focus {border: 5px solid " + COLOR_TOKEN + " !important;} input[type=\"radio\"]:focus, input[type=\"checkbox\"]:focus { outline: 5px solid " + COLOR_TOKEN + " !important; }";
 
-    var INSPECTOR_STYLES = "width: 100%;height: 10rem;position: fixed;bottom: 0;background: rgba(0, 0, 0, 0.5);color: white; padding: 1rem; font-size: 1.4rem";
+    var INSPECTOR_STYLES = "width: 100%;height: auto;position: fixed;bottom: 0;background: rgba(0, 0, 0, 0.5);color: white; padding: 1rem; font-size: 1.4rem";
 
     // Init
     this.currentColorIndex = 0;
