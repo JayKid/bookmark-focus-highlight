@@ -77,7 +77,16 @@
             var attributeNameElement = document.createElement('span');
             attributeNameElement.innerText = attributeName + ": ";
             var attributeValueElement = document.createElement('span');
-            attributeValueElement.innerText = attributeValue;
+            
+            if (attributeName.indexOf('describedby') > 0 || attributeName.indexOf('labelledby') > 0) {
+                // Get the contents of the elements its referencing
+                var referencedElement = document.getElementById(attributeValue);
+                attributeValueElement.innerText = "#" + attributeValue + "'s contents which are: \"" + referencedElement.innerText + "\"";
+            }
+            else {
+                attributeValueElement.innerText = attributeValue;
+            }
+            
             listItemElement.appendChild(attributeNameElement);
             listItemElement.appendChild(attributeValueElement);
             return listItemElement;
