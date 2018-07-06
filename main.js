@@ -2,6 +2,7 @@
     var COLORS = ['lime','rebeccapurple','orange','blue'];
     var ZERO_KEYCODE = 48;
     var I_KEY = 'i';
+    var P_KEY = 'p';
     var STYLE_TAG_ID = 'bfh';
     var INSPECTOR_ELEMENT_ID = 'bfh-inspector';
     var INSPECTOR_TAGNAME_FIELD_ID = 'bfh-inspector-tag';
@@ -9,17 +10,28 @@
     var COLOR_TOKEN = 'COLOR';
     var STYLE_TAG_CONTENTS_TEMPLATE = "*:focus {border: 5px solid " + COLOR_TOKEN + " !important;} input[type=\"radio\"]:focus, input[type=\"checkbox\"]:focus { outline: 5px solid " + COLOR_TOKEN + " !important; }";
 
-    var INSPECTOR_STYLES = "width: 100%;height: auto;position: fixed;bottom: 0;background: rgba(0, 0, 0, 0.5);color: white; padding: 1rem; font-size: 1.4rem";
+    var INSPECTOR_STYLES = "background: rgba(0, 0, 0, 0.5);color: white; padding: 1rem; font-size: 1.4rem;";
+    var INSPECTOR_POSITION_BOTTOM = 0;
+    var INSPECTOR_POSITION_SIDE = 1;
+    var INSPECTOR_POSITIONS = [ INSPECTOR_POSITION_BOTTOM, INSPECTOR_POSITION_SIDE ];
+    var INSPECTOR_STYLE_FOR_POSITION = [];
+    INSPECTOR_STYLE_FOR_POSITION[INSPECTOR_POSITION_BOTTOM] = "width: 100%;height: auto;position: fixed;bottom: 0;";
+    INSPECTOR_STYLE_FOR_POSITION[INSPECTOR_POSITION_SIDE] = "width: auto;height: 100%;position: absolute;right: 0;top: 0;";
 
     // Init
     this.currentColorIndex = 0;
     this.isInspectorDisplayed = true;
+    this.inspectorPosition = INSPECTOR_POSITION_BOTTOM;
 
     // Methods
     this.getNextColor = function() {
         this.currentColorIndex = (this.currentColorIndex+1) % COLORS.length;
         return COLORS[this.currentColorIndex];
     };
+
+    this.getInspectorStyles = function() {
+        return INSPECTOR_STYLES + INSPECTOR_STYLE_FOR_POSITION[this.inspectorPosition];
+    }
 
     this.generateStyleTagContents = function (color) {
         var contents = STYLE_TAG_CONTENTS_TEMPLATE.replace(COLOR_TOKEN, color).replace(COLOR_TOKEN, color);
@@ -46,6 +58,15 @@
             this.isInspectorDisplayed = !this.isInspectorDisplayed;
         }
     };
+
+    this.toggleInspectorPosition = function() {
+        if (event && event.key === P_KEY) {
+            this.inspectorPosition = (this.inspectorPosition + 1) % INSPECTOR_POSITIONS.length;
+            var inspectorElement = document.getElementById(INSPECTOR_ELEMENT_ID);
+            inspectorElement.setAttribute('style', this.getInspectorStyles());
+        }
+    };
+
     this.toggleColor = function(event) {
         if (event && event.keyCode === ZERO_KEYCODE) {
             var currentStyleTag = document.querySelector('#'+STYLE_TAG_ID);
@@ -57,7 +78,7 @@
     this.createAndAppendInspector = function () {
         var inspectorElement = document.createElement('div');
         inspectorElement.setAttribute('id', INSPECTOR_ELEMENT_ID);
-        inspectorElement.setAttribute('style', INSPECTOR_STYLES);
+        inspectorElement.setAttribute('style', this.getInspectorStyles());
         var inspectorElementTagNameLabel = document.createElement('span');
         inspectorElementTagNameLabel.innerHTML = "Focused element type: ";
         var inspectorElementTagName = document.createElement('span');
@@ -107,6 +128,7 @@
     // Bindings
     this.bindKeyboardShortcuts = function() {
         document.addEventListener('keyup', this.toggleColor.bind(this));
+        document.addEventListener('keyup', this.toggleInspectorPosition.bind(this));
         document.addEventListener('keyup', this.toggleInspector.bind(this));
     };
 
