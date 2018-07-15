@@ -5,13 +5,14 @@
   "main": "main.js",
   "scripts": {
     "serve": "python -m SimpleHTTPServer 3000",
-    "build": "gulp compress; gulp bookmarkify",
+    "build": "gulp build",
     "watch": "gulp watch"
   },
   "author": "Jay Kid",
   "license": "MIT",
   "devDependencies": {
     "gulp": "3.9.1",
+    "gulp-concat": "2.6.1",
     "gulp-replace": "0.6.1",
     "gulp-text-simple": "0.4.1",
     "gulp-uglify": "3.0.0",
