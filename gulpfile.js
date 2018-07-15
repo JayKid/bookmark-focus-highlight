@@ -14,11 +14,11 @@ var bookmarkify = function (fileContents) {
 var wrappedBookmarkify = textTransformation(bookmarkify);
 
 gulp.task('watch', function () {
-  return watch('src/*.js', function () {
-      return gulp.src('src/*.js')
-        .pipe(concat('main.js'))
-        .pipe(gulp.dest('temp/'));
-  });
+    return watch('src/*.js', function () {
+        return gulp.src('src/*.js')
+          .pipe(concat('main.js'))
+          .pipe(gulp.dest('temp/'));
+    });
 });
 
 gulp.task('build', function () {
