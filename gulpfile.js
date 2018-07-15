@@ -2,8 +2,6 @@ var gulp = require('gulp');
 var concat = require('gulp-concat');
 var watch = require('gulp-watch');
 var uglify = require('gulp-uglify');
-var pump = require('pump');
-var replace = require('gulp-replace');
 var textTransformation = require('gulp-text-simple');
 
 // Very handcrafted (fragile) function to transform source into a copy-pastable bookmark :(
