@@ -36,7 +36,7 @@ gulp.task('bookmarkify', function() {
 gulp.task('watch', function () {
   return watch('main.js', function () {
       return gulp.src('main.js')
-        .pipe(gulp.dest('dist/'));
+        .pipe(gulp.dest('temp/'));
       
   });
 });
