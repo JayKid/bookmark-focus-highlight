@@ -1,3 +1,4 @@
+// Inspector
 // Constants
 var I_KEY = 'i';
 var P_KEY = 'p';
@@ -12,6 +13,7 @@ var INSPECTOR_STYLE_FOR_POSITION = [];
 INSPECTOR_STYLE_FOR_POSITION[INSPECTOR_POSITION_BOTTOM] = "width: 100%;height: auto;position: fixed;bottom: 0;";
 INSPECTOR_STYLE_FOR_POSITION[INSPECTOR_POSITION_SIDE] = "width: auto;height: 100%;position: absolute;right: 0;top: 0;";
 
+// Methods
 var getInspectorStyles = function () {
     return INSPECTOR_STYLES + INSPECTOR_STYLE_FOR_POSITION[window.Inspector.inspectorPosition];
 }
