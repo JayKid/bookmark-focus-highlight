@@ -1,17 +1,11 @@
 // Init
 this.currentColorIndex = 0;
-this.isInspectorDisplayed = true;
-this.inspectorPosition = INSPECTOR_POSITION_BOTTOM;
 
 // Methods
 this.getNextColor = function() {
     this.currentColorIndex = (this.currentColorIndex+1) % COLORS.length;
     return COLORS[this.currentColorIndex];
 };
-
-this.getInspectorStyles = function() {
-    return INSPECTOR_STYLES + INSPECTOR_STYLE_FOR_POSITION[this.inspectorPosition];
-}
 
 this.generateStyleTagContents = function (color) {
     var contents = STYLE_TAG_CONTENTS_TEMPLATE.replace(COLOR_TOKEN, color).replace(COLOR_TOKEN, color);
@@ -26,49 +20,12 @@ this.createAndAppendStyleTag = function() {
     document.querySelector('head').appendChild(styleTag);
 };
 
-this.toggleInspector = function(event) {
-    if (event && event.key === I_KEY) {
-        var inspectorElement = document.querySelector('#'+INSPECTOR_ELEMENT_ID);
-        if (this.isInspectorDisplayed) {
-            inspectorElement.style.display = 'none';
-        }
-        else {
-            inspectorElement.style.display = 'block';
-        }
-        this.isInspectorDisplayed = !this.isInspectorDisplayed;
-    }
-};
-
-this.toggleInspectorPosition = function() {
-    if (event && event.key === P_KEY) {
-        this.inspectorPosition = (this.inspectorPosition + 1) % INSPECTOR_POSITIONS.length;
-        var inspectorElement = document.getElementById(INSPECTOR_ELEMENT_ID);
-        inspectorElement.setAttribute('style', this.getInspectorStyles());
-    }
-};
-
 this.toggleColor = function(event) {
     if (event && event.keyCode === ZERO_KEYCODE) {
         var currentStyleTag = document.querySelector('#'+STYLE_TAG_ID);
         var nextColor = this.getNextColor();
         currentStyleTag.innerHTML = this.generateStyleTagContents(nextColor);
     }
-};
-
-this.createAndAppendInspector = function () {
-    var inspectorElement = document.createElement('div');
-    inspectorElement.setAttribute('id', INSPECTOR_ELEMENT_ID);
-    inspectorElement.setAttribute('style', this.getInspectorStyles());
-    var inspectorElementTagNameLabel = document.createElement('span');
-    inspectorElementTagNameLabel.innerHTML = "Focused element type: ";
-    var inspectorElementTagName = document.createElement('span');
-    inspectorElementTagName.setAttribute('id', INSPECTOR_TAGNAME_FIELD_ID);
-    var listElement = document.createElement('ul');
-    listElement.setAttribute('id', INSPECTOR_TAG_ATTRIBUTE_LIST_ID);
-    inspectorElement.appendChild(inspectorElementTagNameLabel);
-    inspectorElement.appendChild(inspectorElementTagName);
-    inspectorElement.appendChild(listElement);
-    document.querySelector('body').appendChild(inspectorElement);
 };
 
 this.getAttributesListMarkup = function (DOMNode) {
@@ -108,8 +65,8 @@ this.getAttributesListMarkup = function (DOMNode) {
 // Bindings
 this.bindKeyboardShortcuts = function() {
     document.addEventListener('keyup', this.toggleColor.bind(this));
-    document.addEventListener('keyup', this.toggleInspectorPosition.bind(this));
-    document.addEventListener('keyup', this.toggleInspector.bind(this));
+    document.addEventListener('keyup', Inspector.toggleInspectorPosition);
+    document.addEventListener('keyup', Inspector.toggleDisplay);
 };
 
 this.addFocusListener = function() {
@@ -127,8 +84,9 @@ this.addFocusListener = function() {
     }.bind(this));
 };
 
+
 this.createAndAppendStyleTag();
-this.createAndAppendInspector();
+Inspector.createAndAppendInspector();
 
 this.addFocusListener();
 this.bindKeyboardShortcuts();
