@@ -1,3 +1,6 @@
+// Constants
+var I_KEY = 'i';
+var P_KEY = 'p';
 var INSPECTOR_ELEMENT_ID = 'bfh-inspector';
 var INSPECTOR_TAGNAME_FIELD_ID = 'bfh-inspector-tag';
 var INSPECTOR_TAG_ATTRIBUTE_LIST_ID = 'bfh-inspector-tag-attr-list';
@@ -9,7 +12,7 @@ var INSPECTOR_STYLE_FOR_POSITION = [];
 INSPECTOR_STYLE_FOR_POSITION[INSPECTOR_POSITION_BOTTOM] = "width: 100%;height: auto;position: fixed;bottom: 0;";
 INSPECTOR_STYLE_FOR_POSITION[INSPECTOR_POSITION_SIDE] = "width: auto;height: 100%;position: absolute;right: 0;top: 0;";
 
-var getInspectorStyles = function() {
+var getInspectorStyles = function () {
     return INSPECTOR_STYLES + INSPECTOR_STYLE_FOR_POSITION[window.Inspector.inspectorPosition];
 }
 
@@ -30,7 +33,7 @@ var createAndAppendInspector = function () {
     window.Inspector.isDisplayed = true;
 };
 
-var toggleInspectorPosition = function(event) {
+var toggleInspectorPosition = function (event) {
     if (event && event.key === P_KEY) {
         window.Inspector.inspectorPosition = (window.Inspector.inspectorPosition + 1) % INSPECTOR_POSITIONS.length;
         var inspectorElement = document.getElementById(INSPECTOR_ELEMENT_ID);
@@ -51,11 +54,66 @@ var toggleDisplay = function(event) {
     }
 };
 
+var getAttributesListMarkup = function (DOMNode) {
+
+    var createAttributeListItem = function (attributeName, attributeValue) {
+        var listItemElement = document.createElement('li');
+        var attributeNameElement = document.createElement('span');
+        attributeNameElement.innerText = attributeName + ": ";
+        var attributeValueElement = document.createElement('span');
+        
+        if (attributeName.indexOf('describedby') > 0 || attributeName.indexOf('labelledby') > 0) {
+            // Get the contents of the elements its referencing
+            var referencedElement = document.getElementById(attributeValue);
+            attributeValueElement.innerText = "#" + attributeValue + "'s contents which are: \"" + referencedElement.innerText + "\"";
+        }
+        else {
+            attributeValueElement.innerText = attributeValue;
+        }
+        
+        listItemElement.appendChild(attributeNameElement);
+        listItemElement.appendChild(attributeValueElement);
+        return listItemElement;
+    }
+
+    var listElement = document.createElement('ul');
+    var attributesToDisplay = DOMNode.getAttributeNames().filter(function(attributeName) {
+        return attributeName.indexOf('aria') >= 0;
+    });
+    
+    for (var index in attributesToDisplay) {
+        var attributeName = attributesToDisplay[index];
+        listElement.appendChild(createAttributeListItem(attributeName, DOMNode.getAttribute(attributeName)));
+    }
+    return listElement;
+};
+
+var updateInspectorContentsFromFocusin = function (event) {
+    if (event && event.target) {
+        var element = event.target;
+        var tagNameField = document.querySelector('#'+INSPECTOR_TAGNAME_FIELD_ID);
+        if (tagNameField) {
+            tagNameField.innerHTML = element.tagName;
+            var attributeListElement = getAttributesListMarkup(element);
+            var tagAttributeListElement = document.querySelector('#'+INSPECTOR_TAG_ATTRIBUTE_LIST_ID);
+            tagAttributeListElement.innerHTML = attributeListElement.innerHTML;
+        }
+    }
+};
+
+var initializeKeyBindings = function () {
+    document.addEventListener('keyup', toggleInspectorPosition);
+    document.addEventListener('keyup', toggleDisplay);
+    document.addEventListener('focusin', updateInspectorContentsFromFocusin);
+}
+
 // Yassss, window globals </3
 window.Inspector = {
     isDisplayed: false,
     createAndAppendInspector: createAndAppendInspector,
     toggleInspectorPosition: toggleInspectorPosition,
     toggleDisplay: toggleDisplay,
-    inspectorPosition: INSPECTOR_POSITION_BOTTOM
+    inspectorPosition: INSPECTOR_POSITION_BOTTOM,
+    updateInspectorContentsFromFocusin: updateInspectorContentsFromFocusin,
+    initializeKeyBindings: initializeKeyBindings
 };
