@@ -45,6 +45,7 @@ gulp.task('build', function () {
                 }]
               ]
         }))
+        .pipe(uglify('main.js'))
         .pipe(wrappedBookmarkify())
         .pipe(gulp.dest('dist/'));
 });
