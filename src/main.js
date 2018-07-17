@@ -1,8 +1,8 @@
 // Initialization
 // DOM Manipulation
-Inspector.createAndAppendInspector();
-FocusHandler.createAndAppendStyleTag();
+Inspector.createAndAppendInspector()
+FocusHandler.createAndAppendStyleTag()
 
 // Key bindings
-Inspector.initializeKeyBindings();
-FocusHandler.initializeKeyBindings();
+Inspector.initializeKeyBindings()
+FocusHandler.initializeKeyBindings()
