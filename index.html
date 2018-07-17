@@ -7,21 +7,28 @@
   <title>Bookmark focus playground</title>
   <meta name="description" content="Bookmark focus playground">
   <meta name="author" content="Jay Kid">
-
-  <!-- <link rel="stylesheet" href="css/styles.css?v=1.0"> -->
-
-  <!--[if lt IE 9]>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
-  <![endif]-->
 </head>
 
 <body>
+    <!-- A11y -->
+    <!-- Borrowed from https://webaim.org/techniques/css/invisiblecontent/ :) -->
+    <style>
+      .screen-reader-only {
+          position:absolute;
+          left:-10000px;
+          top:auto;
+          width:1px;
+          height:1px;
+          overflow:hidden;
+      }
+    </style>
     <form>
         <fieldset>
             <legend>Personal information</legend>
             <div>
+              <span class="screen-reader-only" id="input-description">The fake user input that does nothing</span>
               <label for="username">Name: <abbr title="required">*</abbr></label>
-              <input aria-hidden="false" aria-busy="false" id="username" type="text" name="username">
+              <input aria-describedby="input-description" aria-hidden="false" aria-busy="false" id="username" type="text" name="username">
             </div>
         </fieldset>
         <fieldset>
